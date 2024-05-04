@@ -1,0 +1,8 @@
+name: diary_uploader_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.3.3
+
+dev_dependencies:
+  melos: ^6.0.0
