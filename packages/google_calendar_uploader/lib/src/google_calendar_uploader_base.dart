@@ -1,6 +1,7 @@
-// TODO: Put public facing types in this file.
-
 /// Checks if you are awesome. Spoiler: you are.
-class Awesome {
-  bool get isAwesome => true;
+abstract class GoogleCalenderUploader {
+  Future<void> setApiKey(String apiKey);
+  Future<void> setOAuthToken(String accessToken);
+  Future<void> setServiceAccount(String json);
+  Future<void> insert(String calenderId, int start, int end, String content);
 }

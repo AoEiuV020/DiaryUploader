@@ -1,6 +1,8 @@
-// TODO: Put public facing types in this file.
+import 'package:diary_split/diary_split.dart';
 
 /// Checks if you are awesome. Spoiler: you are.
-class Awesome {
-  bool get isAwesome => true;
+abstract class DiarySplit {
+  void setStartTime(int startTime);
+  void append(String diaryDraft);
+  Diary popDiary();
 }

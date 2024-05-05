@@ -5,4 +5,8 @@ library;
 
 export 'src/diary_split_base.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+class Diary {
+  final String content;
+  final int start;
+  final int end;
+}

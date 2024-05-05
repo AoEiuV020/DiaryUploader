@@ -5,4 +5,3 @@ library;
 
 export 'src/google_calendar_uploader_base.dart';
 
-// TODO: Export any libraries intended for clients of this package.
