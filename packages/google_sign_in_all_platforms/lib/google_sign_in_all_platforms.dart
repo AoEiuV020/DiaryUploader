@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in_all_platforms_interface/google_sign_in_all_platforms_interface.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +16,7 @@ class GoogleSignIn {
           'For Desktop, clientSecret and clientId cannot be null',
         ),
         assert(
-          !Platform.isAndroid || params.clientId != null,
+          kIsWeb || !Platform.isAndroid || params.clientId != null,
           'For Android, clientId cannot be null',
         ) {
     GoogleSignInAllPlatformsInterface.instance.init(params);

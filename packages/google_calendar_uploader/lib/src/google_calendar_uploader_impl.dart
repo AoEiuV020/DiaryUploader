@@ -30,17 +30,23 @@ class GoogleCalenderUploaderImpl implements GoogleCalenderUploader {
     String clientSecret,
     String accessToken,
     String tokenType,
-    String refreshToken,
+    String? refreshToken,
   ) async {
-    final client = autoRefreshingClient(
-      ClientId(clientId, clientSecret),
-      AccessCredentials(
-        AccessToken(tokenType, accessToken, DateTime.now().toUtc()),
-        refreshToken,
-        ['https://www.googleapis.com/auth/calendar'],
-      ),
-      Client(),
+    final Client client;
+    final access = AccessCredentials(
+      AccessToken(tokenType, accessToken, DateTime.now().toUtc()),
+      refreshToken,
+      ['https://www.googleapis.com/auth/calendar'],
     );
+    if (refreshToken == null) {
+      client = authenticatedClient(Client(), access);
+    } else {
+      client = autoRefreshingClient(
+        ClientId(clientId, clientSecret),
+        access,
+        Client(),
+      );
+    }
     _api = cal.CalendarApi(client);
   }
 

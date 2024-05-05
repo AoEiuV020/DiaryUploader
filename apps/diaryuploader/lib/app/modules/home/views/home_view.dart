@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
                 final uploader = GoogleCalenderUploader();
                 final SecretsController secrets = Get.find();
                 await uploader.init(secrets.clientId, secrets.clientSecret,
-                    creds.accessToken, creds.tokenType!, creds.refreshToken!);
+                    creds.accessToken, creds.tokenType!, creds.refreshToken);
                 Get.put(uploader);
                 Get.toNamed(Routes.CALENDAR_LIST);
               },
