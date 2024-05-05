@@ -1,0 +1,44 @@
+name: google_sign_in_all_platforms
+description: Google Sign In Plugin for supporting all platforms, even Windows and Linux
+version: 0.0.4
+homepage: https://github.com/vishnuagbly/google_sign_in_all_platforms/tree/main/google_sign_in_all_platforms
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: google_sign_in_all_platforms_mobile
+      ios:
+        default_package: google_sign_in_all_platforms_mobile
+      linux:
+        default_package: google_sign_in_all_platforms_desktop
+      macos:
+        default_package: google_sign_in_all_platforms_desktop
+      web:
+        default_package: google_sign_in_all_platforms_mobile
+      windows:
+        default_package: google_sign_in_all_platforms_desktop
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_sign_in_all_platforms_desktop: ^0.0.1+1
+  google_sign_in_all_platforms_interface: ^0.0.5
+  google_sign_in_all_platforms_mobile: ^0.0.1
+  http: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.0
+  plugin_platform_interface: ^2.1.6
+  very_good_analysis: ^5.1.0
+
+false_secrets:
+  - example/android/app/google-services.json
+  - example/ios/Runner/GoogleService-Info.plist
+  - example/lib/firebase_options.dart

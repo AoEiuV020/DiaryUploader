@@ -3,7 +3,7 @@ repository: https://github.com/AoEiuV020/DiaryUploader
 
 packages:
   - apps/**
-  - packages/**
+  - packages/*
 
 scripts:
   outdated:

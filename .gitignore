@@ -26,3 +26,5 @@ docs/**/*.g.dart
 *.js.map
 
 melos_overrides.yaml
+
+packages/google_sign_in_all_platforms*/example
