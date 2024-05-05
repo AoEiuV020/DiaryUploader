@@ -10,6 +10,9 @@ dependencies:
   get: 4.6.6
   flutter: 
     sdk: flutter
+  google_calendar_uploader:
+  google_sign_in_all_platforms: ^0.0.4
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies: 
   flutter_lints: 3.0.2
@@ -18,4 +21,5 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
-
+  assets:
+    - secrets.env

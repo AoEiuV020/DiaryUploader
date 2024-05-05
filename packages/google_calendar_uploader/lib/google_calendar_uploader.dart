@@ -4,4 +4,3 @@
 library;
 
 export 'src/google_calendar_uploader_base.dart';
-

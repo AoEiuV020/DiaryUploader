@@ -1,12 +1,21 @@
+import 'package:diaryuploader/app/controllers/secrets_controller.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in_all_platforms/google_sign_in_all_platforms.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
-
-  final count = 0.obs;
+  late GoogleSignIn _googleSignIn;
+  final SecretsController secrets = Get.find();
   @override
   void onInit() {
     super.onInit();
+    _googleSignIn = GoogleSignIn(
+      params: GoogleSignInParams(
+        clientId: secrets.clientId,
+        clientSecret: secrets.clientSecret,
+        redirectPort: 3000,
+        scopes: ['https://www.googleapis.com/auth/calendar'],
+      ),
+    );
   }
 
   @override
@@ -19,5 +28,8 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<GoogleSignInCredentials?> signIn() =>
+      _googleSignIn.signIn();
+
+  Future<void> signOut() => _googleSignIn.signOut();
 }
