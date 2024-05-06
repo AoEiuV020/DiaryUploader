@@ -19,11 +19,11 @@ class SecretsController extends GetxController {
       clientId = dotenv.env['GOOGLE_CLIENT_ID_DESKTOP'] ?? '';
       clientSecret = dotenv.env['GOOGLE_CLIENT_SECRET_DESKTOP'] ?? '';
     } else if (GetPlatform.isAndroid) {
-      clientId = dotenv.env['GOOGLE_CLIENT_ID_ANDROID'] ?? '';
-      clientSecret = dotenv.env['GOOGLE_CLIENT_SECRET_ANDROID'] ?? '';
+      clientId = dotenv.env['GOOGLE_CLIENT_ID_WEB'] ?? '';
+      clientSecret = dotenv.env['GOOGLE_CLIENT_SECRET_WEB'] ?? '';
     } else if (GetPlatform.isIOS) {
-      clientId = dotenv.env['GOOGLE_CLIENT_ID_IOS'] ?? '';
-      clientSecret = dotenv.env['GOOGLE_CLIENT_SECRET_IOS'] ?? '';
+      clientId = dotenv.env['GOOGLE_CLIENT_ID_WEB'] ?? '';
+      clientSecret = dotenv.env['GOOGLE_CLIENT_SECRET_WEB'] ?? '';
     } else {
       throw UnsupportedError('unknown platform');
     }
