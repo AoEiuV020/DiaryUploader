@@ -7,5 +7,5 @@ abstract class DiarySplit {
   abstract String content;
   set startTime(DateTime? value);
   void append(String diaryDraft);
-  Diary popDiary();
+  Future<Diary> popDiary();
 }

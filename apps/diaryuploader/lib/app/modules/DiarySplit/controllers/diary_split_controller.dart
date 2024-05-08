@@ -30,8 +30,8 @@ class DiarySplitController extends GetxController {
     diaryLength.value = diaryContent.value.length;
   }
 
-  void next() {
-    final diary = diarySplit.popDiary();
+  void next() async {
+    final diary = await diarySplit.popDiary();
     nextContent.value = diary.content;
     nextStartTime.value = diary.start;
     nextEndTime.value = diary.end;
