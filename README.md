@@ -1,6 +1,9 @@
 # DiaryUploader
 自用工具把日记草稿拆分上传到谷歌日历，
 
+## 开发中
+测试了谷歌oauth登录和日历api使用，  
+
 
 ## macos
 按桌面版走，不按ios的来，  

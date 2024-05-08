@@ -9,4 +9,6 @@ class Diary {
   final String content;
   final int start;
   final int end;
+
+  Diary(this.content, this.start, this.end);
 }

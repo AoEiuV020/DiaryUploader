@@ -30,18 +30,6 @@ class SecretsController extends GetxController {
     return SecretsController(clientId, clientSecret);
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

@@ -18,15 +18,15 @@ class CalendarListView extends GetView<CalendarListController> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // 当异步操作进行中
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               // 当异步操作发生错误
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.error_outline),
-                    SizedBox(height: 20),
+                    const Icon(Icons.error_outline),
+                    const SizedBox(height: 20),
                     Text('Error: ${snapshot.error}'),
                   ],
                 ),
@@ -50,7 +50,7 @@ class CalendarListView extends GetView<CalendarListController> {
                   });
             } else {
               // 当异步操作没有数据返回（通常不会发生）
-              return Center(child: Text('No data'));
+              return const Center(child: Text('No data'));
             }
           }),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
 import 'package:google_sign_in_all_platforms_interface/google_sign_in_all_platforms_interface.dart';
-import 'package:google_sign_in_all_platforms_interface/src/credentials.dart';
 import 'package:http/src/client.dart';
 
 /// An implementation of [GoogleSignInAllPlatformsInterface] that uses method channels.
