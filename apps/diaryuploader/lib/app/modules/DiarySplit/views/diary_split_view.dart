@@ -8,9 +8,33 @@ class DiarySplitView extends GetView<DiarySplitController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Diary split')),
+      appBar: AppBar(title: const Text('Diary split')),
       body: Column(
         children: <Widget>[
+          Obx(() => Text('当前日记草稿长度： ${controller.diaryLength}')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 左侧时间控件
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Obx(() => Text(
+                    controller.timeToString(controller.nextStartTime.value))),
+              ),
+              // 中间横线
+              Container(
+                width: 100.0, // 可以根据需要调整横线的长度
+                height: 2.0, // 横线的宽度
+                color: Colors.black, // 横线的颜色
+              ),
+              // 右侧时间控件
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Obx(() => Text(
+                    controller.timeToString(controller.nextEndTime.value))),
+              ),
+            ],
+          ),
           // 大文本框
           Expanded(
             child: Padding(
@@ -21,9 +45,9 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 expands: true,
                 textAlign: TextAlign.start,
                 textAlignVertical: TextAlignVertical.top,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: '在这里输入文本...',
+                  hintText: '等待下一篇日记',
                 ),
               ),
             ),
@@ -38,15 +62,13 @@ class DiarySplitView extends GetView<DiarySplitController> {
               ),
               const SizedBox(width: 10), // 用于设置按钮之间的间距
               ElevatedButton(
-                onPressed: () {
-                  // 按钮点击事件处理
-                  print('Button 2 pressed');
-                },
-                child: const Text('按钮2'),
+                onPressed: controller.next,
+                child: const Text('下一篇'),
               ),
               // 可以根据需要添加更多的按钮
             ],
           ),
+          const SizedBox.square(dimension: 8)
         ],
       ),
     );
@@ -76,7 +98,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
           TextButton(
             onPressed: () {
               // 将输入的文本粘贴到大文本框里
-              controller.text.value += dialogTextController.text;
+              controller.append(dialogTextController.text);
               Get.back(); // 关闭对话框
             },
             child: const Text('确定'),
