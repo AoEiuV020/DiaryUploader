@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../controllers/diary_split_controller.dart';
@@ -52,25 +53,41 @@ class DiarySplitView extends GetView<DiarySplitController> {
               )
             ],
           ),
-          // 大文本框
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.textController,
-              maxLines: null, // 允许多行文本
-              textAlign: TextAlign.start,
-              textAlignVertical: TextAlignVertical.top,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '等待下一篇日记',
-              ),
-            ),
-          ),
           Expanded(
-              child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Obx(() => DiaryLeftWidget(controller.diaryContent.toList())),
-          )),
+            child: LayoutBuilder(builder: (context, constraints) {
+              const minHeight = 80.0;
+              return Column(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                        maxHeight: constraints.maxHeight - minHeight),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: controller.textController,
+                        maxLines: null, // 允许多行文本
+                        textAlign: TextAlign.start,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: '等待下一篇日记',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(minHeight: minHeight),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Obx(() =>
+                          DiaryLeftWidget(controller.diaryContent.toList())),
+                    ),
+                  )),
+                ],
+              );
+            }),
+          ),
           // 一排按钮
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
