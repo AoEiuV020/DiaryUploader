@@ -98,7 +98,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-    if (pickedDate != null && pickedDate != date) {
+    if (pickedDate != null && context.mounted) {
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(date),
