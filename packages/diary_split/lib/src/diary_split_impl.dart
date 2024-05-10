@@ -24,7 +24,11 @@ class DiarySplitImpl implements DiarySplit {
     DateTime? end;
     var stop = false;
     while (!stop) {
-      final block = await blockTaker.take();
+      final block = blockTaker.take();
+      if (block == null) {
+        stop = true;
+        break;
+      }
       for (var line in block) {
         final (current, text) = parser.parse(line);
         if (first == null && current != null) {
