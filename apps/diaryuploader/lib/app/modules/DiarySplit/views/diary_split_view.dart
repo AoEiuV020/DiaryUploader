@@ -18,8 +18,16 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 左侧时间控件
               Container(
                 padding: const EdgeInsets.all(8.0),
-                child: Obx(() => Text(
-                    controller.timeToString(controller.nextStartTime.value))),
+                child: TextButton(
+                  onPressed: () {
+                    _selectDate(context, controller.nextStartTime.value,
+                        (date) {
+                      controller.nextStartTime.value = date;
+                    });
+                  },
+                  child: Obx(() => Text(
+                      controller.timeToString(controller.nextStartTime.value))),
+                ),
               ),
               // 中间横线
               Container(
@@ -30,9 +38,17 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 右侧时间控件
               Container(
                 padding: const EdgeInsets.all(8.0),
-                child: Obx(() => Text(
-                    controller.timeToString(controller.nextEndTime.value))),
-              ),
+                child: TextButton(
+                  onPressed: () {
+                    _selectDate(context, controller.nextEndTime.value, (date) {
+                      controller.nextEndTime.value = date;
+                      controller.setNextDiaryTime(date);
+                    });
+                  },
+                  child: Obx(() => Text(
+                      controller.timeToString(controller.nextEndTime.value))),
+                ),
+              )
             ],
           ),
           // 大文本框
@@ -72,6 +88,31 @@ class DiarySplitView extends GetView<DiarySplitController> {
         ],
       ),
     );
+  }
+
+  void _selectDate(BuildContext context, DateTime date,
+      void Function(DateTime date) callback) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null && pickedDate != date) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(date),
+      );
+      if (pickedTime != null) {
+        callback(DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        ));
+      }
+    }
   }
 
   void _showDialogAndPasteText(BuildContext context) {

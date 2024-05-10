@@ -56,7 +56,7 @@ class DateTimeParser {
     // 将日期字符串转换为DateTime对象
     final date = startDateFormat.parse(part);
     // 获取当前年份
-    int currentYear = DateTime.now().year;
+    int currentYear = current.year;
     // 设置年份为当前年份
     return DateTime(currentYear, date.month, date.day);
   }

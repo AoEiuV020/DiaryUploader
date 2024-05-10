@@ -37,6 +37,10 @@ class DiarySplitController extends GetxController {
     nextEndTime.value = diary.end;
   }
 
+  void setNextDiaryTime(DateTime nextTime) {
+    diarySplit.startTime = nextTime;
+  }
+
   String timeToString(DateTime value) {
     return dateFormat.format(value);
   }
