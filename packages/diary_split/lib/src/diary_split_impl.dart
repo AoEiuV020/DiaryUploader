@@ -20,6 +20,11 @@ class DiarySplitImpl implements DiarySplit {
   }
 
   @override
+  void back(String text) {
+    blockTaker.back(text);
+  }
+
+  @override
   Future<Diary> popDiary() async {
     final page = <String>[];
     DateTime? first;

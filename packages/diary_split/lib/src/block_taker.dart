@@ -8,6 +8,30 @@ class BlockTaker {
 
   List<Block> get content => blockList.sublist(index);
 
+  /// 在开头插入，
+  void back(String text) {
+    final lineList = const LineSplitter().convert(text);
+    final List<Block> tmpList = [];
+    var block = <String>[];
+    for (var line in lineList) {
+      if (line.trim().isEmpty) {
+        if (block.isEmpty) {
+          continue;
+        } else {
+          tmpList.add(block);
+          block = [];
+        }
+      } else {
+        block.add(line);
+      }
+    }
+    if (block.isNotEmpty) {
+      tmpList.add(block);
+    }
+    blockList.insertAll(index, tmpList);
+  }
+
+  /// 在末尾插入，
   void append(String text) async {
     final lineList = const LineSplitter().convert(text);
     var block = <String>[];
@@ -22,6 +46,9 @@ class BlockTaker {
       } else {
         block.add(line);
       }
+    }
+    if (block.isNotEmpty) {
+      blockList.add(block.reversed.toList());
     }
   }
 

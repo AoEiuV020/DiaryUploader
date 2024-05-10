@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../controllers/diary_split_controller.dart';
@@ -14,7 +12,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
       appBar: AppBar(title: const Text('Diary split')),
       body: Column(
         children: <Widget>[
-          Obx(() => Text('当前日记草稿长度： ${controller.diaryLength}')),
+          Obx(() => Text('当前日记草稿段落： ${controller.diaryLength}')),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -55,7 +53,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
             ],
           ),
           // 大文本框
-            Padding(
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: controller.textController,
@@ -79,9 +77,14 @@ class DiarySplitView extends GetView<DiarySplitController> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () => _showDialogAndPasteText(context),
-                child: const Text('输入'),
+                child: const Text('输入日记草稿'),
               ),
-              const SizedBox(width: 10), // 用于设置按钮之间的间距
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: controller.back,
+                child: const Text('放回选中部分'),
+              ),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: controller.next,
                 child: const Text('下一篇'),

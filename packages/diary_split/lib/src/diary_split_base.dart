@@ -8,4 +8,5 @@ abstract class DiarySplit {
   set startTime(DateTime? value);
   void append(String diaryDraft);
   Future<Diary> popDiary();
+  void back(String text);
 }

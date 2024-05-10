@@ -30,6 +30,17 @@ class DiarySplitController extends GetxController {
     diaryLength.value = diaryContent.length;
   }
 
+  void back() {
+    final start = textController.selection.base.offset;
+    final end = textController.selection.extent.offset;
+    final text = textController.text;
+    final selectedText = text.substring(start, end);
+    final newText = text.replaceRange(start, end, '');
+    diarySplit.back(selectedText);
+    nextContent.value = newText;
+    updateContent();
+  }
+
   void next() async {
     final diary = await diarySplit.popDiary();
     nextContent.value = diary.content;
