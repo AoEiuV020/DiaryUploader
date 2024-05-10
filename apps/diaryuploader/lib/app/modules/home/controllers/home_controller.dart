@@ -18,10 +18,7 @@ class HomeController extends GetxController {
     );
   }
 
-
-
-  Future<GoogleSignInCredentials?> signIn() =>
-      _googleSignIn.signIn();
+  Future<GoogleSignInCredentials?> signIn() => _googleSignIn.signIn();
 
   Future<void> signOut() => _googleSignIn.signOut();
 }

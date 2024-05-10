@@ -29,7 +29,4 @@ class SecretsController extends GetxController {
     }
     return SecretsController(clientId, clientSecret);
   }
-
-
-
 }
