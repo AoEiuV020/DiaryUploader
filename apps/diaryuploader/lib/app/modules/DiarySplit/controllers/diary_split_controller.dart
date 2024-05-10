@@ -71,6 +71,8 @@ class DiarySplitController extends GetxController {
 
   void next() async {
     final diary = await diarySplit.popDiary();
+    currentDiary.value =
+        currentDiary.value.copyWith(content: textController.text);
     diaryCache.addLast(currentDiary.value);
     currentDiary.value = diary;
     diaryContent.value = diarySplit.content;
