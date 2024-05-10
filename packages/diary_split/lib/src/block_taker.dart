@@ -6,6 +6,8 @@ class BlockTaker {
   final List<Block> blockList = [];
   int index = 0;
 
+  List<Block> get content => blockList.sublist(index);
+
   void append(String text) async {
     final lineList = const LineSplitter().convert(text);
     var block = <String>[];

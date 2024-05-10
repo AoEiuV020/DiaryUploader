@@ -9,7 +9,7 @@ class DiarySplitImpl implements DiarySplit {
   final blockTaker = BlockTaker();
 
   @override
-  List<List<String>> get content => blockTaker.blockList;
+  List<List<String>> get content => blockTaker.content;
 
   @override
   String get contentText => content.map((e) => e.join('\n')).join('\n');

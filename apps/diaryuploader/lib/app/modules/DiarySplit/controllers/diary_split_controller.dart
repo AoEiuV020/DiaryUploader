@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
-  final diaryContent = ''.obs;
+  final diaryContent = <List<String>>[].obs;
   final nextContent = ''.obs;
   final nextStartTime = DateTime.now().add(const Duration(days: -1)).obs;
   final nextEndTime = DateTime.now().obs;
@@ -26,8 +26,8 @@ class DiarySplitController extends GetxController {
   }
 
   void updateContent() {
-    diaryContent.value = diarySplit.contentText;
-    diaryLength.value = diaryContent.value.length;
+    diaryContent.value = diarySplit.content;
+    diaryLength.value = diaryContent.length;
   }
 
   void next() async {
@@ -35,6 +35,7 @@ class DiarySplitController extends GetxController {
     nextContent.value = diary.content;
     nextStartTime.value = diary.start;
     nextEndTime.value = diary.end;
+    updateContent();
   }
 
   void setNextDiaryTime(DateTime nextTime) {
