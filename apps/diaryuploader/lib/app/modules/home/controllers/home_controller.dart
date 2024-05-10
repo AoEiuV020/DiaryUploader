@@ -1,4 +1,4 @@
-import 'package:diaryuploader/app/controllers/secrets_controller.dart';
+import '../../../controllers/secrets_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in_all_platforms/google_sign_in_all_platforms.dart';
 

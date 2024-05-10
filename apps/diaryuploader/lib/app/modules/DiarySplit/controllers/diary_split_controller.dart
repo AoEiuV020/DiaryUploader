@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
-  final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+  final DateFormat dateFormat =
+      DateFormat('yyyy-MM-dd(E)HH:mm:ss', Get.locale?.toString());
 
   /// 剩下未处理的日记草稿段落列表，
   final diaryContent = <List<String>>[].obs;

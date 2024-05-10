@@ -1,4 +1,4 @@
-import 'package:diaryuploader/app/routes/app_pages.dart';
+import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_calendar_uploader/google_calendar_uploader.dart';
