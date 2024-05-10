@@ -36,6 +36,6 @@ class BlockTaker {
       }
       block.add(line);
     }
-    return block;
+    return block.reversed.toList();
   }
 }

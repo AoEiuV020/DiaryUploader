@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:stream_taker/stream_taker.dart';
 
 import '../diary_split.dart';
 import 'block_taker.dart';
@@ -56,6 +53,7 @@ class DiarySplitImpl implements DiarySplit {
     start ??= first;
     start ??= parser.current;
     end ??= start.add(Duration(days: 1));
+    parser.current = end;
     return Diary(page.join('\n'), start, end);
   }
 

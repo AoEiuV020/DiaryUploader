@@ -1,7 +1,6 @@
 import '../diary_split.dart';
 import 'diary_split_impl.dart';
 
-/// Checks if you are awesome. Spoiler: you are.
 abstract class DiarySplit {
   factory DiarySplit() => DiarySplitImpl();
   abstract String content;
