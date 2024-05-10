@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../controllers/diary_split_controller.dart';
@@ -14,7 +12,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
       appBar: AppBar(title: const Text('Diary split')),
       body: Column(
         children: <Widget>[
-          Obx(() => Text('当前日记草稿段落： ${controller.diaryLength}')),
+          Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
@@ -24,12 +22,14 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 左侧时间控件
               TextButton(
                 onPressed: () {
-                  _selectDate(context, controller.nextStartTime.value, (date) {
-                    controller.nextStartTime.value = date;
+                  _selectDate(context, controller.currentDiary.value.start,
+                      (date) {
+                    controller.currentDiary.value =
+                        controller.currentDiary.value.copyWith(start: date);
                   });
                 },
-                child: Obx(() => Text(
-                    controller.timeToString(controller.nextStartTime.value))),
+                child: Obx(() => Text(controller
+                    .timeToString(controller.currentDiary.value.start))),
               ),
               // 中间横线
               Container(
@@ -40,14 +40,16 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 右侧时间控件
               TextButton(
                 onPressed: () {
-                  _selectDate(context, controller.nextEndTime.value, (date) {
-                    controller.nextEndTime.value = date;
+                  _selectDate(context, controller.currentDiary.value.end,
+                      (date) {
+                    controller.currentDiary.value =
+                        controller.currentDiary.value.copyWith(end: date);
                     controller.setNextDiaryTime(date);
                   });
                 },
-                child: Obx(() => Text(
-                    controller.timeToString(controller.nextEndTime.value))),
-              )
+                child: Obx(() => Text(controller
+                    .timeToString(controller.currentDiary.value.end))),
+              ),
             ],
           ),
           Expanded(
@@ -108,6 +110,10 @@ class DiarySplitView extends GetView<DiarySplitController> {
                   }
                 },
                 child: const Text('放回选中部分'),
+              ),
+              ElevatedButton(
+                onPressed: controller.previous,
+                child: const Text('前一篇'),
               ),
               ElevatedButton(
                 onPressed: controller.next,

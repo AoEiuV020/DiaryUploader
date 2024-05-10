@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:diary_split/diary_split.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -5,18 +7,20 @@ import 'package:intl/intl.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  /// 剩下未处理的日记草稿段落列表，
   final diaryContent = <List<String>>[].obs;
-  final nextContent = ''.obs;
-  final nextStartTime = DateTime.now().add(const Duration(days: -1)).obs;
-  final nextEndTime = DateTime.now().obs;
-  final diaryLength = 0.obs;
+
+  /// 当前加载出来的日记，
+  late final currentDiary = defaultDiary().obs;
   final diarySplit = DiarySplit();
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+  final diaryCache = DoubleLinkedQueue<Diary>();
   @override
   void onInit() {
     super.onInit();
-    nextContent.stream.listen((event) {
-      textController.text = event;
+    currentDiary.stream.listen((event) {
+      textController.text = event.content;
     });
   }
 
@@ -26,14 +30,14 @@ class DiarySplitController extends GetxController {
     super.onClose();
   }
 
-  void append(String text) {
-    diarySplit.append(text);
-    updateContent();
+  Diary defaultDiary() {
+    final now = DateTime.now();
+    return Diary('', now.add(const Duration(days: -1)), now);
   }
 
-  void updateContent() {
+  void append(String text) {
+    diarySplit.append(text);
     diaryContent.value = diarySplit.content;
-    diaryLength.value = diaryContent.length;
   }
 
   String back() {
@@ -50,17 +54,26 @@ class DiarySplitController extends GetxController {
     final selectedText = text.substring(start, end);
     final newText = text.replaceRange(start, end, '');
     diarySplit.back(selectedText);
-    nextContent.value = newText;
-    updateContent();
+    currentDiary.value = currentDiary.value.copyWith(content: newText);
+    diaryContent.value = diarySplit.content;
     return selectedText;
+  }
+
+  void previous() {
+    diarySplit.back(textController.text);
+    if (diaryCache.isEmpty) {
+      return;
+    }
+    final diary = diaryCache.removeLast();
+    currentDiary.value = diary;
+    diaryContent.value = diarySplit.content;
   }
 
   void next() async {
     final diary = await diarySplit.popDiary();
-    nextContent.value = diary.content;
-    nextStartTime.value = diary.start;
-    nextEndTime.value = diary.end;
-    updateContent();
+    diaryCache.addLast(currentDiary.value);
+    currentDiary.value = diary;
+    diaryContent.value = diarySplit.content;
   }
 
   void setNextDiaryTime(DateTime nextTime) {

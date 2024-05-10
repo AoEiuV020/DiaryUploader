@@ -1,3 +1,4 @@
+import 'diary.dart';
 import '../diary_split.dart';
 import 'diary_split_impl.dart';
 
