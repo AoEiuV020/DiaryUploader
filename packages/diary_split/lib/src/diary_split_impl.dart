@@ -23,7 +23,6 @@ class DiarySplitImpl implements DiarySplit {
     DateTime? start;
     DateTime? end;
     var stop = false;
-    DateTime? previous;
     while (!stop) {
       final block = await blockTaker.take();
       for (var line in block) {
@@ -37,17 +36,9 @@ class DiarySplitImpl implements DiarySplit {
           start = current;
         } else if (text.startsWith('睡觉')) {
           end = current;
-          if (end != null && previous != null) {
-            // 可空的end无法在while中保持智能推断的非空状态，
-            while (end?.isBefore(previous) ?? false) {
-              // 过了24点就跨天，
-              end = end?.add(Duration(days: 1));
-            }
-          }
           stop = true;
         }
         page.add(line);
-        previous = current ?? previous;
       }
     }
     start ??= first;

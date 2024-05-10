@@ -18,6 +18,10 @@ class DateTimeParser {
 
     (DateTime?, String) result(DateTime date) {
       // 能进入这个方法就说明date正常解析到位了，
+      while (date.isBefore(current)) {
+        // 过了24点就跨天，
+        date = date.add(Duration(days: 1));
+      }
       current = date;
       String secondPart =
           spaceIndex != -1 ? line.substring(spaceIndex + 1).trim() : '';
