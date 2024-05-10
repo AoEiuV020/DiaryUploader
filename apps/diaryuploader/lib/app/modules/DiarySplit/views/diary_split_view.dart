@@ -98,7 +98,17 @@ class DiarySplitView extends GetView<DiarySplitController> {
               ),
               const SizedBox(width: 10),
               ElevatedButton(
-                onPressed: controller.back,
+                onPressed: () {
+                  final selected = controller.back();
+                  if (selected.isEmpty) {
+                    Get.defaultDialog(
+                      title: '错误',
+                      middleText: '请先选择文本',
+                      textConfirm: '确定',
+                      onConfirm: Get.back,
+                    );
+                  }
+                },
                 child: const Text('放回选中部分'),
               ),
               const SizedBox(width: 10),

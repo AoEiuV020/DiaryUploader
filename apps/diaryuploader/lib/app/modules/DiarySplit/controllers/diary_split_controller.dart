@@ -20,6 +20,12 @@ class DiarySplitController extends GetxController {
     });
   }
 
+  @override
+  void onClose() {
+    textController.dispose();
+    super.onClose();
+  }
+
   void append(String text) {
     diarySplit.append(text);
     updateContent();
@@ -30,15 +36,23 @@ class DiarySplitController extends GetxController {
     diaryLength.value = diaryContent.length;
   }
 
-  void back() {
-    final start = textController.selection.base.offset;
-    final end = textController.selection.extent.offset;
+  String back() {
+    var start = textController.selection.base.offset;
+    var end = textController.selection.extent.offset;
+    if (start < 0 || end < 0) {
+      return '';
+    }
+    // 从下往上拉时start会比end大，
+    if (start > end) {
+      (start, end) = (end, start);
+    }
     final text = textController.text;
     final selectedText = text.substring(start, end);
     final newText = text.replaceRange(start, end, '');
     diarySplit.back(selectedText);
     nextContent.value = newText;
     updateContent();
+    return selectedText;
   }
 
   void next() async {
