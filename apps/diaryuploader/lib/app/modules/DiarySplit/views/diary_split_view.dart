@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -14,22 +15,21 @@ class DiarySplitView extends GetView<DiarySplitController> {
       body: Column(
         children: <Widget>[
           Obx(() => Text('当前日记草稿段落： ${controller.diaryLength}')),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               // 左侧时间控件
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () {
-                    _selectDate(context, controller.nextStartTime.value,
-                        (date) {
-                      controller.nextStartTime.value = date;
-                    });
-                  },
-                  child: Obx(() => Text(
-                      controller.timeToString(controller.nextStartTime.value))),
-                ),
+              TextButton(
+                onPressed: () {
+                  _selectDate(context, controller.nextStartTime.value, (date) {
+                    controller.nextStartTime.value = date;
+                  });
+                },
+                child: Obx(() => Text(
+                    controller.timeToString(controller.nextStartTime.value))),
               ),
               // 中间横线
               Container(
@@ -38,18 +38,15 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 color: Colors.black, // 横线的颜色
               ),
               // 右侧时间控件
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () {
-                    _selectDate(context, controller.nextEndTime.value, (date) {
-                      controller.nextEndTime.value = date;
-                      controller.setNextDiaryTime(date);
-                    });
-                  },
-                  child: Obx(() => Text(
-                      controller.timeToString(controller.nextEndTime.value))),
-                ),
+              TextButton(
+                onPressed: () {
+                  _selectDate(context, controller.nextEndTime.value, (date) {
+                    controller.nextEndTime.value = date;
+                    controller.setNextDiaryTime(date);
+                  });
+                },
+                child: Obx(() => Text(
+                    controller.timeToString(controller.nextEndTime.value))),
               )
             ],
           ),
@@ -89,14 +86,15 @@ class DiarySplitView extends GetView<DiarySplitController> {
             }),
           ),
           // 一排按钮
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            alignment: WrapAlignment.center,
             children: <Widget>[
               ElevatedButton(
                 onPressed: () => _showDialogAndPasteText(context),
                 child: const Text('输入日记草稿'),
               ),
-              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   final selected = controller.back();
@@ -111,7 +109,6 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 },
                 child: const Text('放回选中部分'),
               ),
-              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: controller.next,
                 child: const Text('下一篇'),
