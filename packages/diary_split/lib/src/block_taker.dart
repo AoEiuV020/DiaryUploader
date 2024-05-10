@@ -1,32 +1,21 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 
-import 'package:stream_taker/stream_taker.dart';
-
 class BlockTaker {
-  final inputStreamController = StreamController<String>();
-  late final lineTaker = StreamTaker(inputStreamController.stream);
+  final queue = Queue();
 
   void append(String text) async {
-    inputStreamController.addStream(reversedStream(text));
-  }
-
-  Stream<String> reversedStream(String text) async* {
-    final lineList =
-        await Stream.value(text).transform(LineSplitter()).toList();
-    yield* Stream.fromIterable(lineList.reversed);
+    final lineList = const LineSplitter().convert(text);
+    queue.addAll(lineList.reversed);
   }
 
   /// 返回空数组说明已经完结了，
   Future<List<String>> take() async {
     final block = <String>[];
-    while (true) {
+    while (queue.isNotEmpty) {
       String line;
-      try {
-        line = await lineTaker.takeOne();
-      } catch (e) {
-        break;
-      }
+      line = queue.removeFirst();
       if (line.trim().isEmpty) {
         if (block.isEmpty) {
           continue;
