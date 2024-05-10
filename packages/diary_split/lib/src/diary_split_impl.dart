@@ -5,14 +5,17 @@ import 'block_taker.dart';
 import 'date_time_parser.dart';
 
 class DiarySplitImpl implements DiarySplit {
-  @override
-  String content = '';
   final parser = DateTimeParser();
   final blockTaker = BlockTaker();
 
   @override
+  List<List<String>> get content => blockTaker.blockList;
+
+  @override
+  String get contentText => content.map((e) => e.join('\n')).join('\n');
+
+  @override
   void append(String diaryDraft) {
-    content += diaryDraft;
     blockTaker.append(diaryDraft);
   }
 

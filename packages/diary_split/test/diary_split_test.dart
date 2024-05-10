@@ -45,7 +45,15 @@ test
 9月28日
 ''';
       diarySplit.append(content);
-      expect(diarySplit.content, content);
+      expect(diarySplit.contentText, '''9月28日
+18:31:32 打卡，下班，
+18:41:15 公交车站边上多了一堆铁栏杆，
+00:54:08 睡觉，
+08:14:18 起床，
+12:38:17 麻辣烫，三荤三素，17元，
+test
+23:32:57 上床，
+00:44:57 睡觉，''');
     });
     test('first day', () async {
       final diary = await diarySplit.popDiary();

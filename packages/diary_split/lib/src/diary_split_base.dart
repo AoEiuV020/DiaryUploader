@@ -3,7 +3,8 @@ import 'diary_split_impl.dart';
 
 abstract class DiarySplit {
   factory DiarySplit() => DiarySplitImpl();
-  abstract String content;
+  List<List<String>> get content;
+  String get contentText;
   set startTime(DateTime? value);
   void append(String diaryDraft);
   Future<Diary> popDiary();

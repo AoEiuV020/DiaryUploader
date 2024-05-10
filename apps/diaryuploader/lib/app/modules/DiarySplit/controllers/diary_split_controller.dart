@@ -26,7 +26,7 @@ class DiarySplitController extends GetxController {
   }
 
   void updateContent() {
-    diaryContent.value = diarySplit.content;
+    diaryContent.value = diarySplit.contentText;
     diaryLength.value = diaryContent.value.length;
   }
 
