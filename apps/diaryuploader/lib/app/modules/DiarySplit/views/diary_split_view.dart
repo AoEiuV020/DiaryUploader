@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/diary_split_controller.dart';
 import 'diary_left_view.dart';
 
@@ -12,7 +14,18 @@ class DiarySplitView extends GetView<DiarySplitController> {
       appBar: AppBar(title: const Text('Diary split')),
       body: Column(
         children: <Widget>[
-          Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Get.toNamed(Routes.SIGN_IN);
+                },
+                child: Obx(() => Text(controller.logged.value ? '已登录' : '未登录')),
+              ),
+            ],
+          ),
+              Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
@@ -122,6 +135,16 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 可以根据需要添加更多的按钮
             ],
           ),
+          Obx(() => Visibility(
+                visible: controller.logged.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: controller.upload,
+                    child: const Text('上传日记'),
+                  ),
+                ),
+              )),
           const SizedBox.square(dimension: 8)
         ],
       ),

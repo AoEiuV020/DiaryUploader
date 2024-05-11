@@ -38,14 +38,19 @@ class CalendarListView extends GetView<CalendarListController> {
                   itemCount: data.length,
                   itemBuilder: (c, index) {
                     final item = data[index];
-                    return Row(
-                      children: [
-                        Text(index.toString()),
-                        const SizedBox(width: 8),
-                        Text(item.name),
-                        const SizedBox(width: 8),
-                        Text(item.id),
-                      ],
+                    return InkWell(
+                      onTap: () {
+                        Get.back(result: item);
+                      },
+                      child: Row(
+                        children: [
+                          Text(index.toString()),
+                          const SizedBox(width: 8),
+                          Text(item.name),
+                          const SizedBox(width: 8),
+                          Text(item.id),
+                        ],
+                      ),
                     );
                   });
             } else {

@@ -1,9 +1,9 @@
-import '../google_calender.dart';
+import '../google_calendar.dart';
 import 'google_calendar_uploader_impl.dart';
 
 /// Checks if you are awesome. Spoiler: you are.
-abstract class GoogleCalenderUploader {
-  factory GoogleCalenderUploader() => GoogleCalenderUploaderImpl();
+abstract class GoogleCalendarUploader {
+  factory GoogleCalendarUploader() => GoogleCalendarUploaderImpl();
   Future<void> init(
     String clientId,
     String clientSecret,
@@ -11,6 +11,7 @@ abstract class GoogleCalenderUploader {
     String tokenType,
     String? refreshToken,
   );
-  Future<List<GoogleCalender>> list();
-  Future<void> insert(String calenderId, int start, int end, String content);
+  Future<List<GoogleCalendar>> list();
+  void setSelectedCalendar(GoogleCalendar calendar);
+  Future<void> insert(int start, int end, String content);
 }

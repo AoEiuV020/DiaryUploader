@@ -1,27 +1,44 @@
-import 'package:google_calendar_uploader/google_calender.dart';
+import 'package:google_calendar_uploader/google_calendar.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:http/http.dart';
-import 'package:googleapis/calendar/v3.dart' as cal;
 import 'package:googleapis_auth/googleapis_auth.dart';
 
 import 'google_calendar_uploader_base.dart';
 
-class GoogleCalenderUploaderImpl implements GoogleCalenderUploader {
+class GoogleCalendarUploaderImpl implements GoogleCalendarUploader {
   CalendarApi? _api;
   CalendarApi get api => _api!;
+  String? _calendarId;
+  String get calendarId => _calendarId!;
 
   @override
-  Future<void> insert(String calenderId, int start, int end, String content) {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<void> insert(int start, int end, String content) async {
+    checkClient();
+    if (_calendarId == null) {
+      throw StateError('require setSelectedCalendar');
+    }
+    // 创建事件
+    final event = Event()
+      ..summary = 'Flutter Event'
+      ..description = content
+      ..start = EventDateTime(
+          dateTime: DateTime.fromMillisecondsSinceEpoch(start).toUtc())
+      ..end = EventDateTime(
+          dateTime: DateTime.fromMillisecondsSinceEpoch(end).toUtc());
+    api.events.insert(event, calendarId);
   }
 
   @override
-  Future<List<GoogleCalender>> list() async {
+  void setSelectedCalendar(GoogleCalendar calendar) {
+    _calendarId = calendar.id;
+  }
+
+  @override
+  Future<List<GoogleCalendar>> list() async {
     checkClient();
     final calendarList = await api.calendarList.list();
     final list = calendarList.items ?? [];
-    return list.map((e) => GoogleCalender(e.id!, e.summary!)).toList();
+    return list.map((e) => GoogleCalendar(e.id!, e.summary!)).toList();
   }
 
   @override
@@ -47,7 +64,7 @@ class GoogleCalenderUploaderImpl implements GoogleCalenderUploader {
         Client(),
       );
     }
-    _api = cal.CalendarApi(client);
+    _api = CalendarApi(client);
   }
 
   void checkClient() {

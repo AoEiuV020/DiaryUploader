@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const CALENDAR_LIST = _Paths.CALENDAR_LIST;
   static const DIARY_SPLIT = _Paths.DIARY_SPLIT;
+  static const SIGN_IN = _Paths.SIGN_IN;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const CALENDAR_LIST = '/calendar-list';
   static const DIARY_SPLIT = '/diary-split';
+  static const SIGN_IN = '/sign-in';
 }

@@ -1,9 +1,7 @@
-import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_calendar_uploader/google_calendar_uploader.dart';
 
-import '../../../controllers/secrets_controller.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -25,32 +23,9 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
-                final creds = await controller.signIn();
-                if (creds == null) {
-                  debugPrint('Could not Sign in');
-                  return;
-                }
-                debugPrint('Signed in Successfully, ${creds.toJson()}');
-                final uploader = GoogleCalenderUploader();
-                final SecretsController secrets = Get.find();
-                await uploader.init(secrets.clientId, secrets.clientSecret,
-                    creds.accessToken, creds.tokenType!, creds.refreshToken);
-                Get.put(uploader);
-                Get.toNamed(Routes.CALENDAR_LIST);
+                Get.toNamed(Routes.SIGN_IN);
               },
-              child: const Text('Sign In'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await controller.signOut();
-                  debugPrint('Signed Out Successfully');
-                } catch (err) {
-                  debugPrint('Could not Sign Out');
-                }
-              },
-              child: const Text('Sign Out'),
+              child: const Text('Google SignIn'),
             ),
             const Spacer(),
           ],

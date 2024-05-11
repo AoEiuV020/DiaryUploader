@@ -3,12 +3,20 @@ import 'dart:collection';
 import 'package:diary_split/diary_split.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_calendar_uploader/google_calendar_uploader.dart';
 import 'package:intl/intl.dart';
+
+import '../../../controllers/google_sign_in_controller.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
   final DateFormat dateFormat =
       DateFormat('yyyy-MM-dd(E)HH:mm:ss', Get.locale?.toString());
+  final GoogleSignInController signIn = Get.find();
+
+  /// 先确保logged在调用这个uploader,
+  late final GoogleCalendarUploader uploader = Get.find();
+  late final logged = signIn.logged;
 
   /// 剩下未处理的日记草稿段落列表，
   final diaryContent = <List<String>>[].obs;
@@ -77,6 +85,17 @@ class DiarySplitController extends GetxController {
     diaryCache.addLast(currentDiary.value);
     currentDiary.value = diary;
     diaryContent.value = diarySplit.content;
+  }
+
+  void upload() {
+    currentDiary.value =
+        currentDiary.value.copyWith(content: textController.text);
+    final diary = currentDiary.value;
+    uploader.insert(
+      diary.start.millisecondsSinceEpoch,
+      diary.end.millisecondsSinceEpoch,
+      diary.content,
+    );
   }
 
   void setNextDiaryTime(DateTime nextTime) {

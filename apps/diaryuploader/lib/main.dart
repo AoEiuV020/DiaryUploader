@@ -1,5 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'app/controllers/google_sign_in_controller.dart';
 import 'app/controllers/secrets_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Get.putAsync(() => SecretsController.create());
+  Get.lazyPut(() => GoogleSignInController());
   initializeDateFormatting(Get.deviceLocale.toString());
   runApp(
     GetMaterialApp(
