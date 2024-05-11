@@ -17,6 +17,7 @@ class DiarySplitController extends GetxController {
   /// 先确保logged在调用这个uploader,
   late final GoogleCalendarUploader uploader = Get.find();
   late final logged = signIn.logged;
+  late final selected = signIn.selected;
 
   /// 剩下未处理的日记草稿段落列表，
   final diaryContent = <List<String>>[].obs;

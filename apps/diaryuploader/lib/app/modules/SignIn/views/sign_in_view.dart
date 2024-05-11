@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_calendar_uploader/google_calendar.dart';
 
 import '../../../controllers/google_sign_in_controller.dart';
-import '../../../routes/app_pages.dart';
 
 class SignInView extends GetView<GoogleSignInController> {
   const SignInView({super.key});
@@ -16,20 +14,17 @@ class SignInView extends GetView<GoogleSignInController> {
           children: [
             const Spacer(),
             Obx(() => Text(controller.logged.value ? '已登录' : '未登录')),
-            Obx(() => Visibility(
-                  visible: controller.logged.value,
-                  child: Padding(
+            Obx(() => !controller.logged.value
+                ? Container()
+                : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final GoogleCalendar selected =
-                            await Get.toNamed(Routes.CALENDAR_LIST);
-                        Get.put(selected);
-                      },
-                      child: const Text('选择日历'),
+                      onPressed: controller.selectCalendar,
+                      child: Obx(() => Text(controller.selected.value
+                          ? controller.calender.name
+                          : '选择日历本')),
                     ),
-                  ),
-                )),
+                  )),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
@@ -37,7 +32,7 @@ class SignInView extends GetView<GoogleSignInController> {
                 if (signInData == null) {
                   return;
                 }
-                Get.toNamed(Routes.CALENDAR_LIST);
+                controller.selectCalendar();
               },
               child: const Text('Sign In'),
             ),

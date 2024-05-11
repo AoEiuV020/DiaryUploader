@@ -5,6 +5,7 @@ import 'package:google_calendar_uploader/google_calendar.dart';
 import 'package:google_calendar_uploader/google_calendar_uploader.dart';
 import 'package:google_sign_in_all_platforms/google_sign_in_all_platforms.dart';
 
+import '../routes/app_pages.dart';
 import 'secrets_controller.dart';
 
 class GoogleSignInController extends GetxController {
@@ -38,7 +39,7 @@ class GoogleSignInController extends GetxController {
     final SecretsController secrets = Get.find();
     await uploader.init(secrets.clientId, secrets.clientSecret,
         signInData.accessToken, signInData.tokenType!, signInData.refreshToken);
-    Get.put(uploader);
+    Get.put(uploader, permanent: true);
     logged.value = true;
     return signInData;
   }
@@ -46,5 +47,11 @@ class GoogleSignInController extends GetxController {
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     logged.value = false;
+  }
+
+  void selectCalendar() async {
+    final GoogleCalendar calendar = await Get.toNamed(Routes.CALENDAR_LIST);
+    Get.put(calendar, permanent: true);
+    selected.value = true;
   }
 }

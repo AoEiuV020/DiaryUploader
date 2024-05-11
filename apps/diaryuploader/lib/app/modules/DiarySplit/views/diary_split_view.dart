@@ -20,11 +20,15 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 onPressed: () {
                   Get.toNamed(Routes.SIGN_IN);
                 },
-                child: Obx(() => Text(controller.logged.value ? '已登录' : '未登录')),
+                child: Obx(() => Text(controller.logged.value
+                    ? controller.selected.value
+                        ? controller.signIn.calender.name
+                        : '选择日历本'
+                    : '未登录')),
               ),
             ],
           ),
-              Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
+          Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
