@@ -19,11 +19,6 @@ class DateTimeParser {
 
     (DateTime?, String) result(DateTime date) {
       // 能进入这个方法就说明date正常解析到位了，
-      if (date.isBefore(current) &&
-          date.add(Duration(days: 1)).isAfter(current)) {
-        // 过了24点就跨天，
-        date = date.add(Duration(days: 1));
-      }
       current = date;
       String secondPart =
           spaceIndex != -1 ? line.substring(spaceIndex + 1).trim() : '';
@@ -48,13 +43,24 @@ class DateTimeParser {
 
   DateTime parseLineTime(String part) {
     final date = lineTimeFormat.parse(part);
-    return current.copyWith(hour: date.hour, minute: date.minute, second: 0);
+    var result =
+        current.copyWith(hour: date.hour, minute: date.minute, second: 0);
+    if (result.isBefore(current)) {
+      // 过了24点就跨天，
+      result = result.add(Duration(days: 1));
+    }
+    return result;
   }
 
   DateTime parseLineWithSecondsTime(String part) {
     final date = lineTimeWithSecondsFormat.parse(part);
-    return current.copyWith(
+    var result = current.copyWith(
         hour: date.hour, minute: date.minute, second: date.second);
+    if (result.isBefore(current)) {
+      // 过了24点就跨天，
+      result = result.add(Duration(days: 1));
+    }
+    return result;
   }
 
   DateTime parseStartDate(String part) {

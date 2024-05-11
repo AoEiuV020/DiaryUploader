@@ -159,6 +159,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
