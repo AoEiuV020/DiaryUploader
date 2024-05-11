@@ -13,5 +13,5 @@ abstract class GoogleCalendarUploader {
   );
   Future<List<GoogleCalendar>> list();
   void setSelectedCalendar(GoogleCalendar calendar);
-  Future<String> insert(int start, int end, String content);
+  Future<String> insert(String title, String content, DateTime start, DateTime end);
 }

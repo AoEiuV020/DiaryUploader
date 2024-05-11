@@ -38,6 +38,7 @@ class DiarySplitController extends GetxController {
     super.onInit();
     currentDiary.stream.listen((event) {
       textController.text = event.content;
+      titleController.text = event.title;
     });
   }
 
@@ -88,11 +89,25 @@ class DiarySplitController extends GetxController {
 
   void next() async {
     final diary = await diarySplit.popDiary();
-    currentDiary.value =
-        currentDiary.value.copyWith(content: textController.text);
+    updateCurrentText();
     diaryCache.addLast(currentDiary.value);
     currentDiary.value = diary;
     diaryContent.value = diarySplit.content;
+  }
+
+  void updateCurrentText() {
+    currentDiary.value = currentDiary.value.copyWith(
+      title: titleController.text,
+      content: textController.text,
+    );
+  }
+
+  void parse() {
+    updateCurrentText();
+    diarySplit.startTime = currentDiary.value.start;
+    final result =
+        diarySplit.parse(currentDiary.value.start, currentDiary.value.content);
+    currentDiary.value = result;
   }
 
   void upload() async {
@@ -108,13 +123,13 @@ class DiarySplitController extends GetxController {
       return;
     }
     uploader.setSelectedCalendar(calendar);
-    currentDiary.value =
-        currentDiary.value.copyWith(content: textController.text);
+    updateCurrentText();
     final diary = currentDiary.value;
     final result = await uploader.insert(
-      diary.start.millisecondsSinceEpoch,
-      diary.end.millisecondsSinceEpoch,
+      diary.title,
       diary.content,
+      diary.start,
+      diary.end,
     );
     Get.snackbar('上传成功', result);
   }

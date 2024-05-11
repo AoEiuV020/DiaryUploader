@@ -3,27 +3,33 @@ import 'package:diary_split/src/date_time_parser.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final year = DateTime.now().year;
   group('date format test', () {
     final parser = DateTimeParser();
+    test('start year date parse', () {
+      final (date, text) = parser.parse('2023.4.2');
+      expect(date.toString(), '2023-04-02 00:00:00.000');
+      expect(text, '');
+    });
     test('start time parse', () {
       final (date, text) = parser.parse('9月28日');
-      expect(date.toString(), '$year-09-28 00:00:00.000');
+      expect(date.toString(), '2023-09-28 00:00:00.000');
       expect(text, '');
     });
     test('time without seconds text parse', () {
       final (date, text) = parser.parse('15:11 打个喷嚏，');
-      expect(date.toString(), '$year-09-28 15:11:00.000');
+      expect(date.toString(), '2023-09-28 15:11:00.000');
       expect(text, '打个喷嚏，');
     });
     test('time text parse', () {
       final (date, text) = parser.parse('18:31:32 打卡，下班，');
-      expect(date.toString(), '$year-09-28 18:31:32.000');
+      expect(date.toString(), '2023-09-28 18:31:32.000');
       expect(text, '打卡，下班，');
     });
   });
   group('parse diary', () {
-    final diarySplit = DiarySplit();
+    final now = DateTime.now();
+    final year = now.year;
+    final diarySplit = DiarySplit()..startTime = now;
     test('append', () async {
       final content = '''
 

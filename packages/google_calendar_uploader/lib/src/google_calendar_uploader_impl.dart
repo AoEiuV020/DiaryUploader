@@ -14,19 +14,18 @@ class GoogleCalendarUploaderImpl implements GoogleCalendarUploader {
   String get calendarId => _calendarId!;
 
   @override
-  Future<String> insert(int start, int end, String content) async {
+  Future<String> insert(
+      String title, String content, DateTime start, DateTime end) async {
     checkClient();
     if (_calendarId == null) {
       throw StateError('require setSelectedCalendar');
     }
     // 创建事件
     final event = Event()
-      ..summary = 'Flutter Event'
+      ..summary = title
       ..description = content
-      ..start = EventDateTime(
-          dateTime: DateTime.fromMillisecondsSinceEpoch(start).toUtc())
-      ..end = EventDateTime(
-          dateTime: DateTime.fromMillisecondsSinceEpoch(end).toUtc());
+      ..start = EventDateTime(dateTime: start.toUtc())
+      ..end = EventDateTime(dateTime: end.toUtc());
     final result = await api.events.insert(event, calendarId);
     log(result.toJson().toString());
     return result.id!;

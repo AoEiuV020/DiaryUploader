@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 class DateTimeParser {
   final startDateFormat = DateFormat("M月d日");
+  final startYearDateFormat = DateFormat("yyyy.M.d");
   final lineTimeWithSecondsFormat = DateFormat("HH:mm:ss");
   final lineTimeFormat = DateFormat("HH:mm");
   DateTime current = DateTime.now();
@@ -18,7 +19,8 @@ class DateTimeParser {
 
     (DateTime?, String) result(DateTime date) {
       // 能进入这个方法就说明date正常解析到位了，
-      while (date.isBefore(current)) {
+      if (date.isBefore(current) &&
+          date.add(Duration(days: 1)).isAfter(current)) {
         // 过了24点就跨天，
         date = date.add(Duration(days: 1));
       }
@@ -36,6 +38,9 @@ class DateTimeParser {
     } catch (e) {}
     try {
       return result(parseStartDate(firstPart));
+    } catch (e) {}
+    try {
+      return result(parseStartYearDate(firstPart));
     } catch (e) {}
     // 到这里说明没解析到时间，
     return (null, line);
@@ -59,5 +64,10 @@ class DateTimeParser {
     int currentYear = current.year;
     // 设置年份为当前年份
     return DateTime(currentYear, date.month, date.day);
+  }
+
+  DateTime parseStartYearDate(String part) {
+    final date = startYearDateFormat.parse(part);
+    return DateTime(date.year, date.month, date.day);
   }
 }

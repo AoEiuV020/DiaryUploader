@@ -27,7 +27,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
                         : '选择日历本'
                     : '未登录')),
               ),
-              Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
+              Obx(() => Text('当前草稿段落： ${controller.diaryContent.length}')),
             ],
           ),
           Wrap(
@@ -158,12 +158,23 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 可以根据需要添加更多的按钮
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: controller.upload,
-              child: const Text('上传日记'),
-            ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: controller.parse,
+                  child: const Text('解析'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: controller.upload,
+                  child: const Text('上传日记'),
+                ),
+              ),
+            ],
           ),
           const SizedBox.square(dimension: 8)
         ],
