@@ -10,8 +10,8 @@ import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync(() => SecretsController.create());
-  Get.lazyPut(() => GoogleSignInController());
+  await Get.putAsync(() => SecretsController.create(), permanent: true);
+  Get.put(GoogleSignInController(), permanent: true);
   initializeDateFormatting(Get.deviceLocale.toString());
   runApp(
     GetMaterialApp(
