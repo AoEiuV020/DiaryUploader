@@ -12,6 +12,7 @@ import '../../../routes/app_pages.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   final DateFormat dateFormat =
       DateFormat('yyyy-MM-dd(E)HH:mm:ss', Get.locale?.toString());
   final GoogleSignInController signIn = Get.find();
@@ -48,7 +49,7 @@ class DiarySplitController extends GetxController {
 
   Diary defaultDiary() {
     final now = DateTime.now();
-    return Diary('', now.add(const Duration(days: -1)), now);
+    return Diary('', '', now.add(const Duration(days: -1)), now);
   }
 
   void append(String text) {

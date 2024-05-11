@@ -27,9 +27,9 @@ class DiarySplitView extends GetView<DiarySplitController> {
                         : '选择日历本'
                     : '未登录')),
               ),
+              Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
             ],
           ),
-          Obx(() => Text('当前日记草稿段落： ${controller.diaryContent.length}')),
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
@@ -48,12 +48,6 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 child: Obx(() => Text(controller
                     .timeToString(controller.currentDiary.value.start))),
               ),
-              // 中间横线
-              Container(
-                width: 100.0, // 可以根据需要调整横线的长度
-                height: 2.0, // 横线的宽度
-                color: Colors.black, // 横线的颜色
-              ),
               // 右侧时间控件
               TextButton(
                 onPressed: () {
@@ -66,6 +60,28 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 },
                 child: Obx(() => Text(controller
                     .timeToString(controller.currentDiary.value.end))),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('标题'),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: controller.titleController,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.all(8),
+                    hintText: '待输入',
+                    hintStyle: TextStyle(
+                      color: Colors.grey, // 使用灰色系列颜色
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -87,6 +103,9 @@ class DiarySplitView extends GetView<DiarySplitController> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: '等待下一篇日记',
+                          hintStyle: TextStyle(
+                            color: Colors.grey, // 使用灰色系列颜色
+                          ),
                         ),
                       ),
                     ),

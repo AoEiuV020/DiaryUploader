@@ -10,4 +10,5 @@ abstract class DiarySplit {
   void append(String diaryDraft);
   Future<Diary> popDiary();
   void back(String text);
+  Diary parse(DateTime from, String content);
 }

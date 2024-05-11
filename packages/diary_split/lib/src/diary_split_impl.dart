@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import '../diary_split.dart';
 import 'block_taker.dart';
@@ -27,6 +28,7 @@ class DiarySplitImpl implements DiarySplit {
   @override
   Future<Diary> popDiary() async {
     final page = <String>[];
+    String? title;
     DateTime? first;
     DateTime? start;
     DateTime? end;
@@ -42,6 +44,9 @@ class DiarySplitImpl implements DiarySplit {
         if (first == null && current != null) {
           first = current;
         }
+        if (text.contains('上班')) {
+          title = '上班';
+        }
         if (text.startsWith('起床')) {
           start = current;
         } else if (text.startsWith('醒')) {
@@ -53,11 +58,45 @@ class DiarySplitImpl implements DiarySplit {
         page.add(line);
       }
     }
+    title ??= '咸鱼';
     start ??= first;
     start ??= parser.current;
     end ??= start.add(Duration(days: 1));
     parser.current = end;
-    return Diary(page.join('\n'), start, end);
+    return Diary(title, page.join('\n'), start, end);
+  }
+
+  @override
+  Diary parse(DateTime from, String content) {
+    final lineList = const LineSplitter().convert(content);
+    startTime = from;
+    final page = <String>[];
+    String? title;
+    DateTime? first;
+    DateTime? start;
+    DateTime? end;
+    for (var line in lineList) {
+      final (current, text) = parser.parse(line);
+      if (first == null && current != null) {
+        first = current;
+      }
+      if (text.contains('上班')) {
+        title = '上班';
+      }
+      if (text.startsWith('起床')) {
+        start = current;
+      } else if (text.startsWith('醒')) {
+        start = current;
+      } else if (text.startsWith('睡觉')) {
+        end = current;
+      }
+      page.add(line);
+    }
+    title ??= '咸鱼';
+    start ??= parser.current;
+    end ??= start.add(Duration(days: 1));
+    parser.current = end;
+    return Diary(title, content, start, end);
   }
 
   @override

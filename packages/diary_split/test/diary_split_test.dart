@@ -51,10 +51,13 @@ test
 
 18:31:32 打卡，下班，
 
+09:10 打卡，上班，
+
 9月28日
 ''';
       diarySplit.append(content);
       expect(diarySplit.contentText, '''9月28日
+09:10 打卡，上班，
 18:31:32 打卡，下班，
 18:41:15 公交车站边上多了一堆铁栏杆，
 00:54:08前 睡觉，
@@ -74,9 +77,11 @@ test
       expect(diary.start.toString(), '$year-09-28 00:00:00.000');
       expect(diary.end.toString(), '$year-09-29 00:54:08.000');
       expect(diary.content, '''9月28日
+09:10 打卡，上班，
 18:31:32 打卡，下班，
 18:41:15 公交车站边上多了一堆铁栏杆，
 00:54:08前 睡觉，''');
+      expect(diary.title, '上班');
     });
     test('second day', () async {
       final diary = await diarySplit.popDiary();
@@ -87,6 +92,7 @@ test
 test
 23:32:57 上床，
 00:44:57 睡觉，''');
+      expect(diary.title, '咸鱼');
     });
     test('back', () async {
       diarySplit.back('''23:32:57 上床，
