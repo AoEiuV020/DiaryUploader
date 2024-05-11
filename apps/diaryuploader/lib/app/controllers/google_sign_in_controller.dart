@@ -11,7 +11,7 @@ import 'secrets_controller.dart';
 class GoogleSignInController extends GetxController {
   late GoogleSignIn _googleSignIn;
   final SecretsController secrets = Get.find();
-  late final GoogleCalendar calender = Get.find();
+  late final GoogleCalendar calendar = Get.find();
   final logged = false.obs;
   final selected = false.obs;
   @override
@@ -50,7 +50,11 @@ class GoogleSignInController extends GetxController {
   }
 
   void selectCalendar() async {
-    final GoogleCalendar calendar = await Get.toNamed(Routes.CALENDAR_LIST);
+    final GoogleCalendar? calendar =
+        await Get.toNamed<dynamic>(Routes.CALENDAR_LIST);
+    if (calendar == null) {
+      return;
+    }
     Get.put(calendar, permanent: true);
     selected.value = true;
   }

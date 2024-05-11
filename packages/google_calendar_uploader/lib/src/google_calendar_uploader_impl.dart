@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_calendar_uploader/google_calendar.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:http/http.dart';
@@ -12,7 +14,7 @@ class GoogleCalendarUploaderImpl implements GoogleCalendarUploader {
   String get calendarId => _calendarId!;
 
   @override
-  Future<void> insert(int start, int end, String content) async {
+  Future<String> insert(int start, int end, String content) async {
     checkClient();
     if (_calendarId == null) {
       throw StateError('require setSelectedCalendar');
@@ -25,7 +27,9 @@ class GoogleCalendarUploaderImpl implements GoogleCalendarUploader {
           dateTime: DateTime.fromMillisecondsSinceEpoch(start).toUtc())
       ..end = EventDateTime(
           dateTime: DateTime.fromMillisecondsSinceEpoch(end).toUtc());
-    api.events.insert(event, calendarId);
+    final result = await api.events.insert(event, calendarId);
+    log(result.toJson().toString());
+    return result.id!;
   }
 
   @override

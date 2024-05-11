@@ -3,16 +3,19 @@ import 'dart:collection';
 import 'package:diary_split/diary_split.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_calendar_uploader/google_calendar.dart';
 import 'package:google_calendar_uploader/google_calendar_uploader.dart';
 import 'package:intl/intl.dart';
 
 import '../../../controllers/google_sign_in_controller.dart';
+import '../../../routes/app_pages.dart';
 
 class DiarySplitController extends GetxController {
   final TextEditingController textController = TextEditingController();
   final DateFormat dateFormat =
       DateFormat('yyyy-MM-dd(E)HH:mm:ss', Get.locale?.toString());
   final GoogleSignInController signIn = Get.find();
+  late final GoogleCalendar calendar = Get.find();
 
   /// 先确保logged在调用这个uploader,
   late final GoogleCalendarUploader uploader = Get.find();
@@ -26,6 +29,9 @@ class DiarySplitController extends GetxController {
   late final currentDiary = defaultDiary().obs;
   final diarySplit = DiarySplit();
   final diaryCache = DoubleLinkedQueue<Diary>();
+
+  /// 成功上传的日记的id保存起来，
+  final eventIdCache = DoubleLinkedQueue<String>();
   @override
   void onInit() {
     super.onInit();
@@ -88,15 +94,28 @@ class DiarySplitController extends GetxController {
     diaryContent.value = diarySplit.content;
   }
 
-  void upload() {
+  void upload() async {
+    if (!selected.value) {
+      Get.defaultDialog(
+          title: '错误',
+          middleText: '请先选择日历',
+          textConfirm: '去选择',
+          onConfirm: () {
+            Get.back();
+            Get.toNamed(Routes.SIGN_IN);
+          });
+      return;
+    }
+    uploader.setSelectedCalendar(calendar);
     currentDiary.value =
         currentDiary.value.copyWith(content: textController.text);
     final diary = currentDiary.value;
-    uploader.insert(
+    final result = await uploader.insert(
       diary.start.millisecondsSinceEpoch,
       diary.end.millisecondsSinceEpoch,
       diary.content,
     );
+    Get.snackbar('上传成功', result);
   }
 
   void setNextDiaryTime(DateTime nextTime) {

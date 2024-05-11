@@ -21,7 +21,7 @@ class SignInView extends GetView<GoogleSignInController> {
                     child: ElevatedButton(
                       onPressed: controller.selectCalendar,
                       child: Obx(() => Text(controller.selected.value
-                          ? controller.calender.name
+                          ? controller.calendar.name
                           : '选择日历本')),
                     ),
                   )),

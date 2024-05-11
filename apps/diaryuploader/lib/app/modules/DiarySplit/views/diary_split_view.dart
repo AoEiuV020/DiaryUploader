@@ -11,6 +11,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Diary split')),
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
           Row(
@@ -22,7 +23,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
                 },
                 child: Obx(() => Text(controller.logged.value
                     ? controller.selected.value
-                        ? controller.signIn.calender.name
+                        ? controller.calendar.name
                         : '选择日历本'
                     : '未登录')),
               ),
@@ -138,16 +139,13 @@ class DiarySplitView extends GetView<DiarySplitController> {
               // 可以根据需要添加更多的按钮
             ],
           ),
-          Obx(() => Visibility(
-                visible: controller.logged.value,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: controller.upload,
-                    child: const Text('上传日记'),
-                  ),
-                ),
-              )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: controller.upload,
+              child: const Text('上传日记'),
+            ),
+          ),
           const SizedBox.square(dimension: 8)
         ],
       ),
