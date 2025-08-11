@@ -47,11 +47,14 @@ class DiarySplitImpl implements DiarySplit {
         if (text.contains('上班') || text.contains('下班')) {
           title = '上班';
         }
-        if (text.startsWith('起床')) {
-          start = current;
-        } else if (text.startsWith('醒')) {
-          start = current;
-        } else if (text.startsWith('睡觉')) {
+        if (start == null) {
+          if (text.startsWith('起床')) {
+            start = current;
+          } else if (text.startsWith('醒')) {
+            start = current;
+          }
+        }
+        if (text.startsWith('睡觉')) {
           end = current;
           stop = true;
         }
