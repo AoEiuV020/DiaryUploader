@@ -54,10 +54,19 @@ class DiarySplitView extends GetView<DiarySplitController> {
                       child: Obx(() => Text(controller
                           .timeToString(controller.currentDiary.value.start))),
                     ),
-                    Obx(() => controller.isUploaded.value
-                        ? const Icon(Icons.check_circle,
-                            color: Colors.green, size: 16)
-                        : const SizedBox(width: 16)),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Obx(() => controller.isUploaded.value
+                            ? const Icon(Icons.check_circle,
+                                color: Colors.green, size: 16)
+                            : const SizedBox(width: 16)),
+                        Obx(() => controller.isOver24Hours.value
+                            ? const Icon(Icons.warning_amber_rounded,
+                                color: Colors.orange, size: 16)
+                            : const SizedBox(width: 16)),
+                      ],
+                    ),
                   ],
                 ),
               ),

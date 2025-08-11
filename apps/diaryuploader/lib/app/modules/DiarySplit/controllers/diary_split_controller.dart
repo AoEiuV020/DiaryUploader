@@ -50,6 +50,9 @@ class DiarySplitController extends GetxController {
   /// 标记当前日记是否已上传
   final isUploaded = false.obs;
 
+  /// 标记当前日记是否超过24小时
+  final isOver24Hours = false.obs;
+
   /// 成功上传的日记的id保存起来，
   final eventIdCache = DoubleLinkedQueue<String>();
   @override
@@ -60,6 +63,9 @@ class DiarySplitController extends GetxController {
       titleController.text = event.title;
       // 日记内容变化时重置上传状态
       isUploaded.value = false;
+      // 检查是否超过24小时
+      final difference = event.end.difference(event.start);
+      isOver24Hours.value = difference.inHours >= 24;
     });
   }
 
