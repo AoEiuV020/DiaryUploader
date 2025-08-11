@@ -133,7 +133,7 @@ class DiarySplitController extends GetxController {
         diary.start,
         diary.end,
       );
-      Get.snackbar('上传成功', result);
+      Get.snackbar('上传成功', '${timeToString(diary.start)}\n$result');
     } catch (e) {
       Get.snackbar('上传失败', e.toString());
     }
