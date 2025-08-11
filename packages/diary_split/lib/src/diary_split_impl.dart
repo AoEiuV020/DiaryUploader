@@ -44,7 +44,7 @@ class DiarySplitImpl implements DiarySplit {
         if (first == null && current != null) {
           first = current;
         }
-        if (text.contains('上班')) {
+        if (text.contains('上班') || text.contains('下班')) {
           title = '上班';
         }
         if (text.startsWith('起床')) {
