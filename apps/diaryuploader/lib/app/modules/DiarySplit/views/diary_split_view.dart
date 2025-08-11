@@ -216,6 +216,7 @@ class DiarySplitView extends GetView<DiarySplitController> {
         title: const Text('请输入文本'),
         content: TextField(
           controller: dialogTextController,
+          autofocus: true, // 自动聚焦输入框
           maxLines: null, // 允许多行文本
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
