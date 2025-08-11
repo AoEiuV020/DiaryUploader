@@ -32,21 +32,34 @@ class DiarySplitView extends GetView<DiarySplitController> {
           ),
           Wrap(
             spacing: 8.0,
-            runSpacing: 8.0,
+            runSpacing: 4.0,
             alignment: WrapAlignment.center,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              // 左侧时间控件
-              TextButton(
-                onPressed: () {
-                  _selectDate(context, controller.currentDiary.value.start,
-                      (date) {
-                    controller.currentDiary.value =
-                        controller.currentDiary.value.copyWith(start: date);
-                  });
-                },
-                child: Obx(() => Text(controller
-                    .timeToString(controller.currentDiary.value.start))),
+              // 左侧时间控件和图标
+              IntrinsicWidth(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _selectDate(
+                            context, controller.currentDiary.value.start,
+                            (date) {
+                          controller.currentDiary.value = controller
+                              .currentDiary.value
+                              .copyWith(start: date);
+                        });
+                      },
+                      child: Obx(() => Text(controller
+                          .timeToString(controller.currentDiary.value.start))),
+                    ),
+                    Obx(() => controller.isUploaded.value
+                        ? const Icon(Icons.check_circle,
+                            color: Colors.green, size: 16)
+                        : const SizedBox(width: 16)),
+                  ],
+                ),
               ),
               // 右侧时间控件
               TextButton(

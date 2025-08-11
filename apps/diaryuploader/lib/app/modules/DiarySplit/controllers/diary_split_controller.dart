@@ -47,6 +47,9 @@ class DiarySplitController extends GetxController {
   final diarySplit = DiarySplit();
   final diaryCache = DoubleLinkedQueue<Diary>();
 
+  /// 标记当前日记是否已上传
+  final isUploaded = false.obs;
+
   /// 成功上传的日记的id保存起来，
   final eventIdCache = DoubleLinkedQueue<String>();
   @override
@@ -55,6 +58,8 @@ class DiarySplitController extends GetxController {
     currentDiary.stream.listen((event) {
       textController.text = event.content;
       titleController.text = event.title;
+      // 日记内容变化时重置上传状态
+      isUploaded.value = false;
     });
   }
 
@@ -149,6 +154,7 @@ class DiarySplitController extends GetxController {
         diary.start,
         diary.end,
       );
+      isUploaded.value = true;
       showTip('上传成功', '${timeToString(diary.start)}\n$result');
     } catch (e) {
       showTip('上传失败', e.toString());
