@@ -126,13 +126,17 @@ class DiarySplitController extends GetxController {
     uploader.setSelectedCalendar(calendar);
     updateCurrentText();
     final diary = currentDiary.value;
-    final result = await uploader.insert(
-      diary.title,
-      diary.content,
-      diary.start,
-      diary.end,
-    );
-    Get.snackbar('上传成功', result);
+    try {
+      final result = await uploader.insert(
+        diary.title,
+        diary.content,
+        diary.start,
+        diary.end,
+      );
+      Get.snackbar('上传成功', result);
+    } catch (e) {
+      Get.snackbar('上传失败', e.toString());
+    }
   }
 
   void setNextDiaryTime(DateTime nextTime) {
