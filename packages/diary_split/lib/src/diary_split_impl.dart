@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../diary_split.dart';
 import 'block_taker.dart';
 import 'date_time_parser.dart';
+import 'diary_parse_result.dart';
 
 class DiarySplitImpl implements DiarySplit {
   final parser = DateTimeParser();
@@ -25,81 +26,102 @@ class DiarySplitImpl implements DiarySplit {
     blockTaker.back(text);
   }
 
-  @override
-  Future<Diary> popDiary() async {
-    final page = <String>[];
-    String? title;
-    DateTime? first;
-    DateTime? start;
-    DateTime? end;
-    var stop = false;
-    while (!stop) {
-      final block = blockTaker.take();
-      if (block == null) {
-        stop = true;
-        break;
-      }
-      for (var line in block) {
-        final (current, text) = parser.parse(line);
-        if (first == null && current != null) {
-          first = current;
-        }
-        if (text.contains('上班') || text.contains('下班')) {
-          title = '上班';
-        }
-        if (start == null) {
-          if (text.startsWith('起床')) {
-            start = current;
-          } else if (text.startsWith('醒')) {
-            start = current;
-          }
-        }
-        if (text.startsWith('睡觉')) {
-          end = current;
-          stop = true;
-        }
-        page.add(line);
-      }
+  Stream<(String, DateTime?, String)> _parseLines(Stream<String> lines) async* {
+    await for (final line in lines) {
+      final (current, text) = parser.parse(line);
+      yield (line, current, text);
     }
-    title ??= '咸鱼';
-    start ??= first;
-    start ??= parser.current;
-    end ??= start.add(Duration(days: 1));
-    parser.current = end;
-    return Diary(title, page.join('\n'), start, end);
   }
 
-  @override
-  Diary parse(DateTime from, String content) {
-    final lineList = const LineSplitter().convert(content);
-    startTime = from;
-    final page = <String>[];
+  DiaryParseResult _accumulate(List<(String, DateTime?, String)> parsedLines) {
     String? title;
     DateTime? first;
     DateTime? start;
     DateTime? end;
-    for (var line in lineList) {
-      final (current, text) = parser.parse(line);
+
+    for (var (_, current, text) in parsedLines) {
       if (first == null && current != null) {
         first = current;
       }
       if (text.contains('上班') || text.contains('下班')) {
         title = '上班';
       }
-      if (text.startsWith('起床')) {
-        start = current;
-      } else if (text.startsWith('醒')) {
-        start = current;
-      } else if (text.startsWith('睡觉')) {
+      if (start == null) {
+        if (text.startsWith('起床') || text.startsWith('醒')) {
+          start = current;
+        }
+      }
+      if (text.startsWith('睡觉')) {
         end = current;
       }
-      page.add(line);
     }
+
     title ??= '咸鱼';
+    start ??= first;
     start ??= parser.current;
     end ??= start.add(Duration(days: 1));
-    parser.current = end;
-    return Diary(title, content, start, end);
+
+    return DiaryParseResult(
+      title: title,
+      start: start,
+      end: end,
+      first: first,
+    );
+  }
+
+  @override
+  Future<Diary> popDiary() async {
+    final lines = <String>[];
+    final parsedLines = <(String, DateTime?, String)>[];
+    var foundSleep = false;
+
+    while (!foundSleep) {
+      final block = blockTaker.take();
+      if (block == null) break;
+
+      await for (final parsed in _parseLines(Stream.fromIterable(block))) {
+        final (line, _, text) = parsed;
+        lines.add(line);
+        parsedLines.add(parsed);
+        if (text.startsWith('睡觉')) {
+          foundSleep = true;
+          break;
+        }
+      }
+    }
+
+    final result = _accumulate(parsedLines);
+    parser.current =
+        result.end ?? result.start?.add(Duration(days: 1)) ?? parser.current;
+
+    return Diary(
+      result.title,
+      lines.join('\n'),
+      result.start ?? parser.current,
+      result.end ?? (result.start?.add(Duration(days: 1)) ?? parser.current),
+    );
+  }
+
+  @override
+  Diary parse(DateTime from, String content) {
+    startTime = from;
+    final lines = const LineSplitter().convert(content);
+    // 同步方式收集所有解析结果
+    final parsedLines = <(String, DateTime?, String)>[];
+    for (final line in lines) {
+      final (current, text) = parser.parse(line);
+      parsedLines.add((line, current, text));
+    }
+
+    final result = _accumulate(parsedLines);
+    parser.current =
+        result.end ?? result.start?.add(Duration(days: 1)) ?? parser.current;
+    return Diary(
+      result.title,
+      content,
+      result.start ?? parser.current,
+      result.end ?? (result.start?.add(Duration(days: 1)) ?? parser.current),
+    );
   }
 
   @override
