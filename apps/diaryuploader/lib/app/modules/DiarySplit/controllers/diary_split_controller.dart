@@ -142,14 +142,32 @@ class DiarySplitController extends GetxController {
     uploader.setSelectedCalendar(calendar);
     updateCurrentText();
     final diary = currentDiary.value;
+    final uploadingStart = diary.start;
+    final uploadingEnd = diary.end;
+
+    // 检查当前日记是否已上传
+    if (isUploaded.value) {
+      showTip('提示',
+          '当前日记已于 ${timeToString(uploadingStart)} 至 ${timeToString(uploadingEnd)} 上传');
+      return;
+    }
+
     try {
       await uploader.insert(
         diary.title,
         diary.content,
-        diary.start,
-        diary.end,
+        uploadingStart,
+        uploadingEnd,
       );
-      isUploaded.value = true;
+      // 如果当前日记的时间和上传时一致，直接标记为已上传
+      if (diary.start == currentDiary.value.start &&
+          diary.end == currentDiary.value.end) {
+        isUploaded.value = true;
+      } else {
+        // 时间已经改变，显示提示信息
+        showTip('上传成功',
+            '已上传日记 ${timeToString(uploadingStart)} 至 ${timeToString(uploadingEnd)}');
+      }
     } catch (e) {
       showTip('上传失败', e.toString());
     }
