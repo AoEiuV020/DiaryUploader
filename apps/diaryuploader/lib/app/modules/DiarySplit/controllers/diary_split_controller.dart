@@ -11,20 +11,9 @@ import '../../../controllers/google_sign_in_controller.dart';
 import '../../../routes/app_pages.dart';
 
 class DiarySplitController extends GetxController {
-  /// 显示提示信息，新的提示会立即覆盖旧的提示
+  /// 显示简单的提示信息
   void showTip(String title, String message) {
-    Get.closeAllSnackbars();
-    Get.rawSnackbar(
-      title: title,
-      message: message,
-      duration: const Duration(milliseconds: 1500),
-      snackPosition: SnackPosition.TOP,
-      animationDuration: const Duration(milliseconds: 150),
-      borderRadius: 8,
-      isDismissible: true,
-      overlayBlur: 0,
-      margin: const EdgeInsets.all(8),
-    );
+    Get.snackbar(title, message);
   }
 
   final TextEditingController textController = TextEditingController();
@@ -154,14 +143,13 @@ class DiarySplitController extends GetxController {
     updateCurrentText();
     final diary = currentDiary.value;
     try {
-      final result = await uploader.insert(
+      await uploader.insert(
         diary.title,
         diary.content,
         diary.start,
         diary.end,
       );
       isUploaded.value = true;
-      showTip('上传成功', '${timeToString(diary.start)}\n$result');
     } catch (e) {
       showTip('上传失败', e.toString());
     }
